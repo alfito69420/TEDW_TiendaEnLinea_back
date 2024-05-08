@@ -22,7 +22,7 @@ router.get('/get-all-products', (req, res) => {
 
 //  UPDATE PRODUCTOS
 router.post('/update/:id', (req, res) => {
-    var update_producto_sql = "UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, cantidad = ?, photo = ?, id_cat_producto = ?";
+    var update_producto_sql = "UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, cantidad = ?, photo = ?, id_cat_producto = ? WHERE id_producto = ?";
   
     var values = [
       req.body.nombre,
