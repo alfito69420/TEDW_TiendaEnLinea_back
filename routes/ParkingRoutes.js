@@ -49,7 +49,22 @@ router.post('/update/:id', (req, res) => {
 
 //  CREATE PRODUCTOS
 
-//  DELETE PRODUCTOS
 
+//  DELETE PRODUCTOS
+router.delete('/delete/:id', function (req, res, next) {
+    //var product = { id: req.params.id }
+  
+    connection.query('DELETE FROM producto WHERE id_producto = ?', req.params.id, function (err, result) {
+      if (err) {
+        console.log(err);
+        return res.status(500).json(err);
+      } else {
+        //req.flash('success', 'User has been deleted successfully! id = ' + req.params.id)
+        console.log("Number of records deleted: " + result.affectedRows);
+        // redirect to users list page or send a success response
+        return res.status(200).json({ message: 'User deleted successfully' });
+      }
+    });
+  });
 
 module.exports = router;
