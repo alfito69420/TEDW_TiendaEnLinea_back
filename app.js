@@ -11,9 +11,13 @@ app.use(function(req, res, next) {
 });
 
 require('./database/MySQLConnections')
-const parkingRoutes = require('./routes/ParkingRoutes')
+//const parkingRoutes = require('./routes/productRoutes')
+const productsRoutes = require('./routes/productRoutes')
+const categoryRoutes = require('./routes/categoryRoutes')
 
-app.use('/api/v1', parkingRoutes)
+//app.use('/api/v1', parkingRoutes)
+app.use('/api/v1/products', productsRoutes)
+app.use('/api/v1/categories', categoryRoutes)
 
 app.get('/', (req, res) => res.send('¡Hola Mundo!'));
 app.listen(port, () => console.log(`¡La aplicación de ejemplo está escuchando en el puerto ${port}!`));
