@@ -14,8 +14,6 @@ exports.register = async (req, res) => {
 
         //console.log(passHash);
 
-        
-
         conexion.databaseConnection.query('INSERT INTO Usuario SET ?',
             { nombre: nombre, ap_paterno: ap_paterno, ap_materno: ap_materno, email: email, contrasena: passHash },
             (error, results) => {
