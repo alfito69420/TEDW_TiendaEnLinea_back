@@ -1,9 +1,3 @@
-
-//  JWT
-const jwt = require('jsonwebtoken');
-const bodyParser = require('body-parser');
-const secretKey = 'TuClaveSecreta';
-
 const express = require('express');
 let router = express.Router();
 
