@@ -4,7 +4,7 @@ let router = express.Router();
 let connection = require('../database/MySQLConnections').databaseConnection;
 
 //  SELECT PRODUCTOS
-router.get('/get-all-products', (req, res) => {
+router.get('/get-all', (req, res) => {
     connection.query('SELECT * FROM producto', (err, rows, fields) => {
         if (err) throw err;
 
@@ -17,7 +17,6 @@ router.get('/get-all-products', (req, res) => {
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(rows);
     });
-
 });
 
 //  UPDATE PRODUCTOS
@@ -87,5 +86,6 @@ router.delete('/delete/:id', function (req, res, next) {
         }
     });
 });
+
 
 module.exports = router;
