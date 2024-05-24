@@ -3,6 +3,7 @@ const bcryptjs = require('bcryptjs');
 const conexion = require('../database/MySQLConnections');
 
 const { promisify } = require('util');
+const { resolveSoa } = require('dns');
 
 // Procedimiento para registro
 exports.register = async (req, res) => {
@@ -28,6 +29,34 @@ exports.register = async (req, res) => {
     }
 };
 
+exports.login2 = async (req, res) => {
+    try {
+        if(req.body.nombre == 'admin' && req.body.contrasena == '123') {
+            const payload  = {
+                check:true
+            }
+
+            const token = jwt.sign(payload, 'shhh', {
+                expiresIn: '7d'
+            });
+
+            res.json({
+                meesage: "Autenticacion exitosa",
+                token: token
+            });
+
+            console.log('exito')
+        } else {
+            res.json({
+                message: "Usuario y/o contraseña incorrectas. Autenticacion fallida.",
+            });
+
+            console.log('fallido');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 //  Login
 exports.login = async (req, res) => {
@@ -35,7 +64,7 @@ exports.login = async (req, res) => {
         const nombre = req.body.nombre;
         const contrasena = req.body.contrasena;
 
-        console.log(nombre + " - " + contrasena);
+        //console.log(nombre + " - " + contrasena);
 
         if (!nombre || !contrasena) {
             console.log("Ha ingresado datos vacios.")
@@ -85,6 +114,12 @@ exports.isAuthenticated = async (req, res, next)=>{
         //res.redirect('/login')        
     }
 }
+
+/* 
+exports.verify = (req, res, next) => {
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    console.log(token)
+} */
 
 exports.logout = (req, res)=>{
     res.clearCookie('jwt')   

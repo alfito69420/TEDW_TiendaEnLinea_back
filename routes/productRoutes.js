@@ -1,13 +1,12 @@
 const express = require('express');
 let router = express.Router();
-
 const authController = require('../controllers/authController')
-
+const verificacion = require('../middleware/verificacion');
 let connection = require('../database/MySQLConnections').databaseConnection;
 //const authController = require('../controllers/authController')
 
 //  SELECT PRODUCTOS
-router.get('/get-all', (req, res) => {
+router.get('/get-all',verificacion, (req, res) => {
     connection.query('SELECT * FROM producto', (err, rows, fields) => {
         if (err) throw err;
 

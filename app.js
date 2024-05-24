@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-var cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser')
+const jwt = require('jsonwebtoken');
+require('./database/MySQLConnections')
 
-app.use(cookieParser())
+//app.use(cookieParser())
 app.use(express.json())
 
 app.use(function(req, res, next) {
@@ -16,14 +18,12 @@ app.use(function(req, res, next) {
 //app.use(express.urlencoded({extended:true}))
 
 
-//  Llamar 
-require('./database/MySQLConnections')
-
 //  Llamar al Enrutador
 const categoryRoutes = require('./routes/categoryRoutes')
 const userRoutes = require('./routes/userRoutes')
 const productRoutes = require('./routes/productRoutes')
 
+//  
 app.use('/api/v1/categories', categoryRoutes)
 app.use('/api/v1/users', userRoutes)
 app.use('/api/v1/products', productRoutes)
