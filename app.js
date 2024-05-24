@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const cookieParser = require('cookieparser');
+var cookieParser = require('cookie-parser')
 
+app.use(cookieParser())
 app.use(express.json())
 
 app.use(function(req, res, next) {
@@ -16,7 +17,7 @@ app.use(function(req, res, next) {
 
 
 //  Para trabajar con las cookies
-app.use(cookieParser);
+app.use(cookieParser());
  */
 
 //  Llamar 
