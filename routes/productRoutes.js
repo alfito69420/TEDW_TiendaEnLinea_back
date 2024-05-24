@@ -1,8 +1,10 @@
 const express = require('express');
 let router = express.Router();
 
-let connection = require('../database/MySQLConnections').databaseConnection;
 const authController = require('../controllers/authController')
+
+let connection = require('../database/MySQLConnections').databaseConnection;
+//const authController = require('../controllers/authController')
 
 //  SELECT PRODUCTOS
 router.get('/get-all', (req, res) => {
@@ -48,7 +50,7 @@ router.post('/update/:id', (req, res) => {
 })
 
 //  CREATE PRODUCTOS
-router.post('/register-product', (req, res) => {
+router.post('/register-product', authController.isAuthenticated, (req, res) => {
     var register_producto_sql = "INSERT INTO producto (nombre, descripcion, precio, cantidad, photo, id_cat_producto) VALUES (?)";
 
     var values = [

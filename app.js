@@ -13,12 +13,8 @@ app.use(function(req, res, next) {
 });
 
 //  Para procesar todos los datos enviados desde forms
-/* app.use(express.urlencoded({extended:true}))
+//app.use(express.urlencoded({extended:true}))
 
-
-//  Para trabajar con las cookies
-app.use(cookieParser());
- */
 
 //  Llamar 
 require('./database/MySQLConnections')
