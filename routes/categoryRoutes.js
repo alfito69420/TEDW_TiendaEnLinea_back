@@ -1,6 +1,8 @@
 const express = require('express');
 let router = express.Router();
 
+const authController = require('../controllers/authController')
+
 let connection = require('../database/MySQLConnections').databaseConnection;
 
 /* CATEGORIAS */
@@ -50,7 +52,6 @@ router.post('/register', (req, res) => {
 
     connection.query(register_producto_sql, [values], function (err, result) {
         if (err) {
-
             return res.status(500).json(err);
         }
         else {

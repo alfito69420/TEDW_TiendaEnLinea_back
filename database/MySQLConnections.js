@@ -10,25 +10,6 @@ const connection = mysql.createConnection({
   database: process.env.DB
 });
 
-/*
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "admin_ecomerce",
-  password: "123",
-  database: "ecomerce"
-});
-*/
 connection.connect();
-
-//const connectionObj = connection.connect();
-/*
-connectionObj.on('connected', ()=> {
-    console.log('MongoDB connection successful')
-})
-
-connectionObj.on('error', ()=> {
-    console.log('MongoDB connection failed...')
-})
-*/
 
 exports.databaseConnection = connection;

@@ -1,10 +1,12 @@
 const express = require('express');
 let router = express.Router();
-
+const authController = require('../controllers/authController')
+const verificacion = require('../middleware/verificacion');
 let connection = require('../database/MySQLConnections').databaseConnection;
+//const authController = require('../controllers/authController')
 
 //  SELECT PRODUCTOS
-router.get('/get-all', (req, res) => {
+router.get('/get-all',verificacion, (req, res) => {
     connection.query('SELECT * FROM producto', (err, rows, fields) => {
         if (err) throw err;
 
@@ -47,7 +49,7 @@ router.post('/update/:id', (req, res) => {
 })
 
 //  CREATE PRODUCTOS
-router.post('/register', (req, res) => {
+router.post('/register-product', authController.isAuthenticated, (req, res) => {
     var register_producto_sql = "INSERT INTO producto (nombre, descripcion, precio, cantidad, photo, id_cat_producto) VALUES (?)";
 
     var values = [
@@ -86,6 +88,5 @@ router.delete('/delete/:id', function (req, res, next) {
         }
     });
 });
-
 
 module.exports = router;
