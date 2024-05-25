@@ -157,3 +157,17 @@ exports.selectOne = (req, res) => {
         res.status(200).json(rows);
     })
 }
+
+exports.delete = (req, res) => {
+    var delete_usuario = "DELETE FROM Usuario WHERE usuario_id = ?";
+
+    conexion.databaseConnection.query(delete_usuario, req.params.id, function (err, result) {
+        if (err) {
+            console.log(err);
+            return res.status(500).json(err);
+        } else {
+            console.log("Number of records deleted: " + result.affectedRows);
+            return res.status(200).json({ message: 'User with id:' + req.params.id + ' deleted successfully' });
+        }
+    });
+}

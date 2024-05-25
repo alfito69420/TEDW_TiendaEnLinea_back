@@ -17,7 +17,7 @@ router.get('/logout', authController.logout);
 router.post('/update/:id', verificacion, authController.update);
 
 //  Delete de usuarios
-//router.delete('/delete/:id', authController.delete);
+router.delete('/delete/:id', verificacion, authController.delete);
 
 //  Select all usuarios
 router.get('/get-all', verificacion, authController.selectAll);
