@@ -89,3 +89,71 @@ exports.logout = (req, res) => {
     return res.redirect('/')
 }
 
+exports.update = (req, res) => {
+    var update_usuario = 'UPDATE Usuario SET nombre = ?, ap_paterno = ?, ap_materno = ?, email = ? WHERE usuario_id = ?';
+
+    var values = [
+        req.body.nombre,
+        req.body.ap_paterno,
+        req.body.ap_materno,
+        req.body.email,
+        req.params.id // Se cambió req.params.usuario_id a req.params.id
+    ];
+
+    console.log(req.body);
+
+    conexion.databaseConnection.query(update_usuario, values, function (err, result) {
+        if (err) {
+            return res.status(500).json(err);
+        } else {
+            console.log("Number of records updated: " + result.affectedRows);
+            return res.status(200).json({
+                message: "Usuario actualizado.",
+                data: [
+                    req.body
+                ]
+            });
+        }
+    });
+};
+
+
+exports.selectAll = (req, res) => {
+    var select_usuario = "SELECT * FROM Usuario";
+
+    console.log(req.body);
+
+    conexion.databaseConnection.query(select_usuario, (err, rows, fields) => {
+        if (err) throw err;
+
+        rows.forEach(row => {
+            console.log('ID:', row.id_producto); // Cambia 'id' al nombre real del campo
+            console.log('Producto:', row.nombre); // Cambia 'nombre' al nombre real del campo
+        });
+        console.log(rows);
+
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).json(rows);
+    })
+}
+
+exports.selectOne = (req, res) => {
+    var select_usuario = "SELECT * FROM Usuario WHERE usuario_id = (?)";
+
+    const id = req.params.id;
+
+    console.log(req.body);
+
+    conexion.databaseConnection.query(select_usuario, [id], (err, rows, fields) => {
+        if (err) throw err;
+
+        rows.forEach(row => {
+            console.log('ID:', row.usuario_id);
+            console.log('Nombre:', row.nombre);
+        });
+        console.log(rows);
+
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).json(rows);
+    })
+}
