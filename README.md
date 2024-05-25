@@ -5,7 +5,7 @@ Las dependencias a instalar son las siguientes:
   -  npm install express
   -  npm install jsonwebtoken
   -  npm install express-jwt
-  -  npm install mysq
+  -  npm install mysql
 
 Para ejecutar la aplicación el comando es el siguiente:
   -  nodemon app.js o node app.js
