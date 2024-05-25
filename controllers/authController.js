@@ -145,13 +145,24 @@ exports.selectOne = (req, res) => {
     console.log(req.body);
 
     conexion.databaseConnection.query(select_usuario, [id], (err, rows, fields) => {
-        if (err) throw err;
 
-        rows.forEach(row => {
-            console.log('ID:', row.usuario_id);
-            console.log('Nombre:', row.nombre);
-        });
-        console.log(rows);
+        if (rows.length === 0) {
+            res.status(404).json({
+                message: "El usuario con el ID: " + id + " no existe."
+            });
+        }
+
+        if (err) {
+            res.json({
+                error: err
+            })
+        } else {
+            rows.forEach(row => {
+                console.log('ID:', row.usuario_id);
+                console.log('Nombre:', row.nombre);
+            });
+            console.log(rows);
+        }
 
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(rows);
