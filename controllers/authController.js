@@ -29,65 +29,33 @@ exports.register = async (req, res) => {
     }
 };
 
-exports.login2 = async (req, res) => {
-    try {
-        if(req.body.nombre == 'admin' && req.body.contrasena == '123') {
-            const payload  = {
-                check:true
-            }
-
-            const token = jwt.sign(payload, 'shhh', {
-                expiresIn: '7d'
-            });
-
-            res.json({
-                meesage: "Autenticacion exitosa",
-                token: token
-            });
-
-            console.log('exito')
-        } else {
-            res.json({
-                message: "Usuario y/o contraseña incorrectas. Autenticacion fallida.",
-            });
-
-            console.log('fallido');
-        }
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 //  Login
 exports.login = async (req, res) => {
     try {
         const nombre = req.body.nombre;
         const contrasena = req.body.contrasena;
 
-        //console.log(nombre + " - " + contrasena);
-
         if (!nombre || !contrasena) {
             console.log("Ha ingresado datos vacios.")
-            res.status(500).json({ error: "Hubo un error en el servidor" });
+            res.json({ message: "Campos de login vacíos." });
         } else {
-            //console.log(nombre + " - " + contrasena);
             conexion.databaseConnection.query('SELECT * FROM Usuario WHERE nombre = ?', [nombre], async (error, results) => {
-                if(results.length == 0 || ! (await bcryptjs.compare(contrasena, results[0].contrasena))) {
-                    res.status(500).json({ error: "Hubo un error con las credenciales" });
+                if (results.length == 0 || !(await bcryptjs.compare(contrasena, results[0].contrasena))) {
+                    res.json({ error: "Usuario y/o contraseña incorrectas. Autenticacion fallida." });
                 } else {
                     const id = results[0].usuario_id
-                    const token = jwt.sign({id:id}, process.env.JWT_SECRETO, {expiresIn: process.env.JWT_TIEMPO_EXPIRA})
-
-                    console.log("token: "+token+ " para el usuario: "+ nombre);
+                    const token = jwt.sign({ id: id }, process.env.JWT_SECRETO, { expiresIn: process.env.JWT_TIEMPO_EXPIRA })
 
                     const cookieOptions = {
-                        expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+                        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
                         httpOnly: true
                     }
 
                     res.cookie('jwt', token, cookieOptions)
-                    console.log("Yeah todo correcto bro")
-                    res.status(200).json({ message: "Login exitoso" });
+                    res.status(200).json({
+                        message: "Usuario " + nombre + " se logeo exitosamente.",
+                        token: token
+                    });
                 }
             })
         }
@@ -95,14 +63,14 @@ exports.login = async (req, res) => {
         console.error("Error en el controlador de login:", error);
         res.status(500).json({ error: "Hubo un error en el servidor" });
     }
-} 
+}
 
-exports.isAuthenticated = async (req, res, next)=>{
+exports.isAuthenticated = async (req, res, next) => {
     if (req.cookies.jwt) {
         try {
             const decodificada = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRETO)
-            conexion.query('SELECT * FROM Usuario WHERE usuario_id = ?', [decodificada.id], (error, results)=>{
-                if(!results){return next()}
+            conexion.query('SELECT * FROM Usuario WHERE usuario_id = ?', [decodificada.id], (error, results) => {
+                if (!results) { return next() }
                 req.nombre = results[0]
                 return next()
             })
@@ -110,19 +78,13 @@ exports.isAuthenticated = async (req, res, next)=>{
             console.log(error)
             return next()
         }
-    }else{
+    } else {
         //res.redirect('/login')        
     }
 }
 
-/* 
-exports.verify = (req, res, next) => {
-    let token = req.headers['x-access-token'] || req.headers['authorization'];
-    console.log(token)
-} */
-
-exports.logout = (req, res)=>{
-    res.clearCookie('jwt')   
+exports.logout = (req, res) => {
+    res.clearCookie('jwt')
     res.status(200).json({ message: "Logout exitoso" });
     //return res.redirect('/')
 }
