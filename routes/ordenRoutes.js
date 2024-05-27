@@ -73,16 +73,64 @@ router.post('/register-orden-compra', verificacion, (req, res) => {
 
     connection.query(register_orden_sql, [values], function (err, result) {
         if (err) {
-            return res.status(500).json(err);
+            return res.status(500).json({ message: "Error al generar orden de compra.", error: err });
         }
         else {
-            return res.status(200).json(req.body);
+            return res.status(200).json({ message: "La orden de compra se ha generado exitosamente.", data: req.body });
         }
     });
 })
 
+// Total de ventas semanales con clientes y productos
+router.get('/total-ventas-semanales', verificacion, (req, res) => {
+    connection.query(`
+        SELECT WEEK(fecha) AS semana, 
+               SUM(monto_total) AS total_ventas,
+               COUNT(DISTINCT id_usuario) AS total_clientes,
+               SUM(cantidad) AS total_productos 
+        FROM orden_compra 
+        GROUP BY WEEK(fecha)`,
+        (err, rows, fields) => {
+            if (err) throw err;
 
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200).json({message: "Ventas totales semanales.", data: rows});
+        });
+});
 
+// Total de ventas mensuales con clientes y productos
+router.get('/total-ventas-mensuales', verificacion, (req, res) => {
+    connection.query(`
+        SELECT MONTH(fecha) AS mes, 
+               YEAR(fecha) AS anio, 
+               SUM(monto_total) AS total_ventas,
+               COUNT(DISTINCT id_usuario) AS total_clientes,
+               SUM(cantidad) AS total_productos 
+        FROM orden_compra 
+        GROUP BY YEAR(fecha), MONTH(fecha)`,
+        (err, rows, fields) => {
+            if (err) throw err;
 
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200).json({message: "Ventas totales mensuales.", data: rows});
+        });
+});
+
+// Total de ventas anuales con clientes y productos
+router.get('/total-ventas-anuales', verificacion, (req, res) => {
+    connection.query(`
+        SELECT YEAR(fecha) AS anio, 
+               SUM(monto_total) AS total_ventas,
+               COUNT(DISTINCT id_usuario) AS total_clientes,
+               SUM(cantidad) AS total_productos 
+        FROM orden_compra 
+        GROUP BY YEAR(fecha)`,
+        (err, rows, fields) => {
+            if (err) throw err;
+
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200).json({ message: "Ventas totales por anio.", data: rows });
+        });
+});
 
 module.exports = router;
