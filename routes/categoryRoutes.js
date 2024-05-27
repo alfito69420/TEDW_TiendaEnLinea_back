@@ -1,7 +1,6 @@
 const express = require('express');
 let router = express.Router();
 const verificacion = require('../middleware/verificacion');
-const authController = require('../controllers/authController')
 
 let connection = require('../database/MySQLConnections').databaseConnection;
 
@@ -18,7 +17,7 @@ router.get('/get-all', (req, res) => {
         console.log(rows);
 
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(rows);
+        res.status(200).json({message: "Total de categorias.", data: rows});
     });
 });
 
@@ -37,7 +36,7 @@ router.get('/get-one/:nombre', (req, res) => {
         console.log(rows);
 
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(rows);
+        res.status(200).json({message: "Categoria encontrada en la base de datos.", data: rows});
     });
 });
 
@@ -55,7 +54,7 @@ router.post('/register', verificacion, (req, res) => {
             return res.status(500).json(err);
         }
         else {
-            return res.status(200).json(req.body);
+            return res.status(200).json({message: "Categoria registrada exitosamente.", data: req.body});
         }
     });
 })
@@ -77,7 +76,7 @@ router.post('/update/:id', verificacion, (req, res) => {
             return res.status(500).json(err);
         } else {
             console.log("Number of records updated: " + result.affectedRows);
-            return res.status(200).json(req.body);
+            return res.status(200).json({message: "Categoria actualizada exitosamente.", data: req.body});
         }
     });
 })
@@ -94,7 +93,8 @@ router.delete('/delete/:id', verificacion, function (req, res, next) {
             //req.flash('success', 'User has been deleted successfully! id = ' + req.params.id)
             console.log("Number of records deleted: " + result.affectedRows);
             // redirect to users list page or send a success response
-            return res.status(200).json({ message: 'Category deleted successfully' });
+            //return res.status(200).json({ message: 'Category deleted successfully' });
+            return res.status(200).json({message: "Categoria eliminada exitosamente."});
         }
     });
 });
