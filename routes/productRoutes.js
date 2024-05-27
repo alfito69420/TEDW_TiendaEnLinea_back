@@ -6,7 +6,7 @@ let connection = require('../database/MySQLConnections').databaseConnection;
 //const authController = require('../controllers/authController')
 
 //  SELECT PRODUCTOS
-router.get('/get-all',verificacion, (req, res) => {
+router.get('/get-all', (req, res) => {
     connection.query('SELECT * FROM producto', (err, rows, fields) => {
         if (err) throw err;
 
