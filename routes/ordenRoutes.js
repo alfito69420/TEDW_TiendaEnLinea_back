@@ -1,10 +1,10 @@
 const express = require('express');
 let router = express.Router();
-const authController = require('../controllers/authController')
 const verificacion = require('../middleware/verificacion');
 let connection = require('../database/MySQLConnections').databaseConnection;
 
 //  SELECT BY ID
+//  Obtiene las ordenes de compra realizadas por un usuario en especifico
 router.get('/get-one/:id_usuario', verificacion, (req, res) => {
 
     const id_usuario = req.params.id_usuario;
@@ -23,7 +23,24 @@ router.get('/get-one/:id_usuario', verificacion, (req, res) => {
     });
 });
 
+//  Total de ordenes y productos comprados
+router.get('/get-all-ordenes-compras', verificacion, (req, res) => {
+    connection.query('SELECT COUNT(DISTINCT o.id_orden_compra) AS total_orden_compra, SUM(o.cantidad) AS total_productos FROM orden_compra o JOIN producto p ON o.id_producto = p.id_producto;', (err, rows, fields) => {
+        if (err) throw err;
+
+        rows.forEach(row => {
+            //console.log('ID:', row.id_producto);
+            //console.log('Producto:', row.nombre);
+        });
+        console.log(rows);
+
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).json(rows);
+    });
+});
+
 //  SELECT ALL
+//  Devuelve todas las ordenes de compra realizadas por todos los usuarios registrados
 router.get('/get-all', verificacion, (req, res) => {
     connection.query('SELECT * FROM orden_compra', (err, rows, fields) => {
         if (err) throw err;
@@ -60,6 +77,8 @@ router.post('/register-orden-compra', verificacion, (req, res) => {
         }
     });
 })
+
+
 
 
 
