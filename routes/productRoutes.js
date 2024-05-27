@@ -49,7 +49,7 @@ router.post('/update/:id', (req, res) => {
 })
 
 //  CREATE PRODUCTOS
-router.post('/register-product', authController.isAuthenticated, (req, res) => {
+router.post('/register-product', verificacion, (req, res) => {
     var register_producto_sql = "INSERT INTO producto (nombre, descripcion, precio, cantidad, photo, id_cat_producto) VALUES (?)";
 
     var values = [

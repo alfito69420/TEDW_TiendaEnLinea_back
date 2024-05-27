@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
     }
 }
 
-exports.isAuthenticated = async (req, res, next) => {
+/* exports.isAuthenticated = async (req, res, next) => {
     if (req.cookies.jwt) {
         try {
             const decodificada = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRETO)
@@ -82,7 +82,7 @@ exports.isAuthenticated = async (req, res, next) => {
         //res.redirect('/login')        
     }
 }
-
+ */
 exports.logout = (req, res) => {
     res.clearCookie('jwt')
     res.status(200).json({ message: "Logout exitoso" });
@@ -100,7 +100,7 @@ exports.update = (req, res) => {
         req.body.pais,
         req.body.email,
         req.body.telefono,
-        req.params.id // Se cambió req.params.usuario_id a req.params.id
+        req.params.id // Se cambió req.params.usuario_id a req.par ams.id
     ];
 
     console.log(req.body);
