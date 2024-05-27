@@ -32,14 +32,14 @@ exports.register = async (req, res) => {
 //  Login
 exports.login = async (req, res) => {
     try {
-        const nombre = req.body.nombre;
+        const email = req.body.email;
         const contrasena = req.body.contrasena;
 
-        if (!nombre || !contrasena) {
+        if (!email || !contrasena) {
             console.log("Ha ingresado datos vacios.")
             res.json({ message: "Campos de login vacíos." });
         } else {
-            conexion.databaseConnection.query('SELECT * FROM Usuario WHERE nombre = ?', [nombre], async (error, results) => {
+            conexion.databaseConnection.query('SELECT * FROM Usuario WHERE email = ?', [email], async (error, results) => {
                 if (results.length == 0 || !(await bcryptjs.compare(contrasena, results[0].contrasena))) {
                     res.json({ error: "Usuario y/o contraseña incorrectas. Autenticacion fallida." });
                 } else {
@@ -53,7 +53,7 @@ exports.login = async (req, res) => {
 
                     res.cookie('jwt', token, cookieOptions)
                     res.status(200).json({
-                        message: "Usuario " + nombre + " se logeo exitosamente.",
+                        message: "Usuario " + email + " se logeo exitosamente.",
                         token: token
                     });
                 }
