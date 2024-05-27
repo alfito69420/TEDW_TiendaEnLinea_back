@@ -23,12 +23,14 @@ const categoryRoutes = require('./routes/categoryRoutes')
 const userRoutes = require('./routes/userRoutes')
 const productRoutes = require('./routes/productRoutes')
 const direccionRoutes = require('./routes/direccionRoutes')
+const ordenRoutes = require('./routes/ordenRoutes')
 
 //  Rutas
 app.use('/api/v1/categories', categoryRoutes)
 app.use('/api/v1/users', userRoutes)
 app.use('/api/v1/products', productRoutes)
 app.use('/api/v1/direccion', direccionRoutes)
+app.use('/api/v1/orden', ordenRoutes)
 
 app.get('/', (req, res) => res.send('¡Hola Mundo!'));
 app.listen(port, () => console.log(`Server Up Running in Port: ${port}!`));
