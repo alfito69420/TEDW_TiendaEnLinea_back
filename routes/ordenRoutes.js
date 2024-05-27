@@ -5,7 +5,7 @@ const verificacion = require('../middleware/verificacion');
 let connection = require('../database/MySQLConnections').databaseConnection;
 
 //  SELECT BY ID
-router.get('/get-all/:id_usuario', verificacion, (req, res) => {
+router.get('/get-one/:id_usuario', verificacion, (req, res) => {
 
     const id_usuario = req.params.id_usuario;
 
@@ -15,6 +15,22 @@ router.get('/get-all/:id_usuario', verificacion, (req, res) => {
         rows.forEach(row => {
             //console.log('ID:', row.id_catproducto);
             //console.log('Categoria:', row.categoria);
+        });
+        console.log(rows);
+
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).json(rows);
+    });
+});
+
+//  SELECT ALL
+router.get('/get-all', verificacion, (req, res) => {
+    connection.query('SELECT * FROM orden_compra', (err, rows, fields) => {
+        if (err) throw err;
+
+        rows.forEach(row => {
+            //console.log('ID:', row.id_producto);
+            //console.log('Producto:', row.nombre);
         });
         console.log(rows);
 

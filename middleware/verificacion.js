@@ -60,7 +60,8 @@ router.use((req, res, next) => {
                             '/api/v1/direccion/register-direccion',
                             '/api/v1/direccion/get-one/:id_usuario',
                             '/api/v1/orden/register-orden-compra',
-                            '/api/v1/orden/get-all/:id_usuario'
+                            '/api/v1/orden/get-one/:id_usuario',
+                            '/api/v1/orden/get-all'
                         ];
                     } else if (userRoleId === 2) { // Si el usuario tiene el rol 2 (cliente)
                         allowedRoutes = [
