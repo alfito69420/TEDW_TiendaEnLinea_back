@@ -58,14 +58,17 @@ router.get('/get-all', verificacion, (req, res) => {
 
 //  CREATE 
 router.post('/register-orden-compra', verificacion, (req, res) => {
-    var register_orden_sql = "INSERT INTO orden_compra (monto_descuento, monto_total, cantidad, id_usuario, id_producto) VALUES (?)";
+    var register_orden_sql = "INSERT INTO orden_compra (monto_descuento, monto_total, cantidad, id_usuario, id_producto, fecha) VALUES (?)";
+
+    const fechaActual = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     var values = [
         req.body.monto_descuento,
         req.body.monto_total,
         req.body.cantidad,
         req.body.id_usuario,
-        req.body.id_producto
+        req.body.id_producto,
+        fechaActual
     ];
 
     connection.query(register_orden_sql, [values], function (err, result) {
