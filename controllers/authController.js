@@ -90,13 +90,16 @@ exports.logout = (req, res) => {
 }
 
 exports.update = (req, res) => {
-    var update_usuario = 'UPDATE Usuario SET nombre = ?, ap_paterno = ?, ap_materno = ?, email = ? WHERE usuario_id = ?';
+    var update_usuario = 'UPDATE Usuario SET nombre = ?, ap_paterno = ?, ap_materno = ?, compania = ?, pais = ?, email = ?, telefono = ? WHERE usuario_id = ?';
 
     var values = [
         req.body.nombre,
         req.body.ap_paterno,
         req.body.ap_materno,
+        req.body.compania,
+        req.body.pais,
         req.body.email,
+        req.body.telefono,
         req.params.id // Se cambió req.params.usuario_id a req.params.id
     ];
 
