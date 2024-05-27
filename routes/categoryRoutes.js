@@ -1,6 +1,6 @@
 const express = require('express');
 let router = express.Router();
-
+const verificacion = require('../middleware/verificacion');
 const authController = require('../controllers/authController')
 
 let connection = require('../database/MySQLConnections').databaseConnection;
@@ -33,7 +33,7 @@ router.get('/get-one/:nombre', (req, res) => {
         rows.forEach(row => {
             console.log('ID:', row.id_catproducto);
             console.log('Categoria:', row.categoria);
-        });
+        })
         console.log(rows);
 
         res.setHeader('Content-Type', 'application/json');
@@ -42,7 +42,7 @@ router.get('/get-one/:nombre', (req, res) => {
 });
 
 //  CREATE 
-router.post('/register', (req, res) => {
+router.post('/register', verificacion, (req, res) => {
     var register_producto_sql = "INSERT INTO cat_producto (categoria, id_proveedor) VALUES (?)";
 
     var values = [
@@ -61,7 +61,7 @@ router.post('/register', (req, res) => {
 })
 
 //  UPDATE
-router.post('/update/:id', (req, res) => {
+router.post('/update/:id', verificacion, (req, res) => {
     var update_categoria = "UPDATE cat_producto set categoria = ?, id_proveedor = ? WHERE id_catproducto = ?";
 
     var values = [
@@ -83,7 +83,7 @@ router.post('/update/:id', (req, res) => {
 })
 
 //  DELETE
-router.delete('/delete/:id', function (req, res, next) {
+router.delete('/delete/:id', verificacion, function (req, res, next) {
     //var product = { id: req.params.id }
 
     connection.query('DELETE FROM cat_producto WHERE id_catproducto = ?', req.params.id, function (err, result) {
