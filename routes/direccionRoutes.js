@@ -5,7 +5,7 @@ const verificacion = require('../middleware/verificacion');
 let connection = require('../database/MySQLConnections').databaseConnection;
 
 //  SELECT BY ID
-router.get('/get-one/:id_usuario', (req, res) => {
+router.get('/get-one/:id_usuario', verificacion, (req, res) => {
 
     const id_usuario = req.params.id_usuario;
 

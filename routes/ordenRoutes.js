@@ -24,7 +24,7 @@ router.get('/get-all/:id_usuario', verificacion, (req, res) => {
 });
 
 //  CREATE 
-router.post('/register-orden-compra', (req, res) => {
+router.post('/register-orden-compra', verificacion, (req, res) => {
     var register_orden_sql = "INSERT INTO orden_compra (monto_descuento, monto_total, cantidad, id_usuario, id_producto) VALUES (?)";
 
     var values = [

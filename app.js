@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken');
-const bodyParse = requiere('body-parser')
+const bodyParse = require('body-parser')
 require('./database/MySQLConnections')
 
 //app.use(cookieParser())

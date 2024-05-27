@@ -22,7 +22,7 @@ router.get('/get-all',verificacion, (req, res) => {
 });
 
 //  UPDATE PRODUCTOS
-router.post('/update/:id', (req, res) => {
+router.post('/update/:id', verificacion, (req, res) => {
     var update_producto_sql = "UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, cantidad = ?, photo = ?, id_cat_producto = ? WHERE id_producto = ?";
 
     var values = [
@@ -73,7 +73,7 @@ router.post('/register-product', verificacion, (req, res) => {
 })
 
 //  DELETE PRODUCTOS
-router.delete('/delete/:id', function (req, res, next) {
+router.delete('/delete/:id', verificacion, function (req, res, next) {
     //var product = { id: req.params.id }
 
     connection.query('DELETE FROM producto WHERE id_producto = ?', req.params.id, function (err, result) {
