@@ -11,7 +11,7 @@ router.post('/login', authController.login);
 router.post('/register', authController.register);
 
 //  Logout de usuarios
-router.get('/logout', authController.logout);
+router.get('/logout', verificacion, authController.logout);
 
 //  Update de usuarios
 router.post('/update/:id', verificacion, authController.update);

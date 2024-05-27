@@ -32,14 +32,14 @@ exports.register = async (req, res) => {
 //  Login
 exports.login = async (req, res) => {
     try {
-        const nombre = req.body.nombre;
+        const email = req.body.email;
         const contrasena = req.body.contrasena;
 
-        if (!nombre || !contrasena) {
+        if (!email || !contrasena) {
             console.log("Ha ingresado datos vacios.")
             res.json({ message: "Campos de login vacíos." });
         } else {
-            conexion.databaseConnection.query('SELECT * FROM Usuario WHERE nombre = ?', [nombre], async (error, results) => {
+            conexion.databaseConnection.query('SELECT * FROM Usuario WHERE email = ?', [email], async (error, results) => {
                 if (results.length == 0 || !(await bcryptjs.compare(contrasena, results[0].contrasena))) {
                     res.json({ error: "Usuario y/o contraseña incorrectas. Autenticacion fallida." });
                 } else {
@@ -53,7 +53,7 @@ exports.login = async (req, res) => {
 
                     res.cookie('jwt', token, cookieOptions)
                     res.status(200).json({
-                        message: "Usuario " + nombre + " se logeo exitosamente.",
+                        message: "Usuario " + email + " se logeo exitosamente.",
                         token: token
                     });
                 }
@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
     }
 }
 
-exports.isAuthenticated = async (req, res, next) => {
+/* exports.isAuthenticated = async (req, res, next) => {
     if (req.cookies.jwt) {
         try {
             const decodificada = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRETO)
@@ -82,7 +82,7 @@ exports.isAuthenticated = async (req, res, next) => {
         //res.redirect('/login')        
     }
 }
-
+ */
 exports.logout = (req, res) => {
     res.clearCookie('jwt')
     res.status(200).json({ message: "Logout exitoso" });
@@ -90,14 +90,17 @@ exports.logout = (req, res) => {
 }
 
 exports.update = (req, res) => {
-    var update_usuario = 'UPDATE Usuario SET nombre = ?, ap_paterno = ?, ap_materno = ?, email = ? WHERE usuario_id = ?';
+    var update_usuario = 'UPDATE Usuario SET nombre = ?, ap_paterno = ?, ap_materno = ?, compania = ?, pais = ?, email = ?, telefono = ? WHERE usuario_id = ?';
 
     var values = [
         req.body.nombre,
         req.body.ap_paterno,
         req.body.ap_materno,
+        req.body.compania,
+        req.body.pais,
         req.body.email,
-        req.params.id // Se cambió req.params.usuario_id a req.params.id
+        req.body.telefono,
+        req.params.id // Se cambió req.params.usuario_id a req.par ams.id
     ];
 
     console.log(req.body);
