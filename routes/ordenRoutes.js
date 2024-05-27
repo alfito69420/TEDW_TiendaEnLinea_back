@@ -12,14 +12,10 @@ router.get('/get-one/:id_usuario', verificacion, (req, res) => {
     connection.query('select p.nombre, p.descripcion, orden_compra.cantidad, monto_descuento, monto_total from orden_compra join producto p on orden_compra.id_producto = p.id_producto where id_usuario = ?;', [id_usuario], (err, rows, fields) => {
         if (err) throw err;
 
-        rows.forEach(row => {
-            //console.log('ID:', row.id_catproducto);
-            //console.log('Categoria:', row.categoria);
-        });
         console.log(rows);
 
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(rows);
+        res.status(200).json({message: "Orden de compra encontrada en la base de datos.", data: rows});
     });
 });
 
@@ -28,14 +24,10 @@ router.get('/get-all-ordenes-compras', verificacion, (req, res) => {
     connection.query('SELECT COUNT(DISTINCT o.id_orden_compra) AS total_orden_compra, SUM(o.cantidad) AS total_productos FROM orden_compra o JOIN producto p ON o.id_producto = p.id_producto;', (err, rows, fields) => {
         if (err) throw err;
 
-        rows.forEach(row => {
-            //console.log('ID:', row.id_producto);
-            //console.log('Producto:', row.nombre);
-        });
         console.log(rows);
 
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(rows);
+        res.status(200).json({message: "Total de ordenes y productos comprados.", data: rows});
     });
 });
 
@@ -45,14 +37,10 @@ router.get('/get-all', verificacion, (req, res) => {
     connection.query('SELECT * FROM orden_compra', (err, rows, fields) => {
         if (err) throw err;
 
-        rows.forEach(row => {
-            //console.log('ID:', row.id_producto);
-            //console.log('Producto:', row.nombre);
-        });
         console.log(rows);
 
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(rows);
+        res.status(200).json({message: "Total de ordenes realizadas por todos los usuarios registrados.", data: rows});
     });
 });
 

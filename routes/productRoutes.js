@@ -17,7 +17,7 @@ router.get('/get-all',verificacion, (req, res) => {
         console.log(rows);
 
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(rows);
+        res.status(200).json({message: "Total de productos en tienda.",data: rows});
     });
 });
 
@@ -43,7 +43,7 @@ router.post('/update/:id', verificacion, (req, res) => {
             return res.status(500).json(err);
         } else {
             console.log("Number of records updated: " + result.affectedRows);
-            return res.status(200).json(req.body);
+            return res.status(200).json({message: "Producto actualizado con exitosamente.", data: req.body});
         }
     });
 })
@@ -67,7 +67,7 @@ router.post('/register-product', verificacion, (req, res) => {
         }
         else {
             console.log("Number of records inserted: " + result.affectedRows);
-            return res.status(200).json(req.body);
+            return res.status(200).json({message: "Producto creado exitosamente.", data: req.body});
         }
     });
 })
@@ -84,7 +84,7 @@ router.delete('/delete/:id', verificacion, function (req, res, next) {
             //req.flash('success', 'User has been deleted successfully! id = ' + req.params.id)
             console.log("Number of records deleted: " + result.affectedRows);
             // redirect to users list page or send a success response
-            return res.status(200).json({ message: 'User deleted successfully' });
+            return res.status(200).json({ message: 'Producto eliminado exitosamente.' });
         }
     });
 });

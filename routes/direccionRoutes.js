@@ -1,6 +1,5 @@
 const express = require('express');
 let router = express.Router();
-const authController = require('../controllers/authController')
 const verificacion = require('../middleware/verificacion');
 let connection = require('../database/MySQLConnections').databaseConnection;
 
@@ -19,7 +18,7 @@ router.get('/get-one/:id_usuario', verificacion, (req, res) => {
         console.log(rows);
 
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(rows);
+        res.status(200).json({message: "Direccion encontrada en la base de datos.", data: rows});
     });
 });
 
@@ -41,7 +40,7 @@ router.post('/register-direccion', verificacion, (req, res) => {
         }
         else {
             console.log("Number of records inserted: " + result.affectedRows);
-            return res.status(200).json(req.body);
+            return res.status(200).json({message: "Direccion creada exitosamente.", data: req.body});
         }
     });
 })
@@ -65,7 +64,7 @@ router.post('/update/:id_usuario', verificacion, (req, res) => {
             return res.status(500).json(err);
         } else {
             console.log("Number of records updated: " + result.affectedRows);
-            return res.status(200).json(req.body);
+            return res.status(200).json({message: "Direccion actualizada exitosamente.", data: req.body});
         }
     });
 })
